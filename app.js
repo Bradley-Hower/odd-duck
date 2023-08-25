@@ -31,8 +31,11 @@ function OddDuckProducts(imagename, image_ext = 'jpg'){
 //** Helper functions (Random Generator, image generator) */   For redesign with any variable number
 
 function randomarraynumber (){
-  return Math.floor(Math.random() * productarray.length);
+  let somenumber = Math.floor(Math.random() * productarray.length);
+  console.log(somenumber);
+  return somenumber;
 }
+
 
 function renderimages (){
   let choiceimage1 = randomarraynumber();
@@ -43,10 +46,9 @@ function renderimages (){
     choiceimage2 = randomarraynumber();
   }
 
-  while (choiceimage3 === choiceimage1 || choiceimage3 === choiceimage2){
+  while (choiceimage3 === choiceimage1 || choiceimage3 === choiceimage2 ){
     choiceimage3 = randomarraynumber();
   }
-
 
   imageone.src = productarray[choiceimage1].image;
   imageone.title = productarray[choiceimage1].name;
@@ -76,13 +78,13 @@ function votehandler(event){
 }
 
 function resultshandler(){
-  if (votingrounds === 0){
+  if (votingrounds <= 0){
     for(let i = 0; i < productarray.length; i++){
       let odditem = document.createElement('li');
       odditem.textContent = `${productarray[i].name} - ${productarray[i].votes} votes, ${productarray[i].views} views`;
       voteresults.appendChild(odditem);
     }
-    // viewresults.removeEventListener('click', resultshandler);
+    viewresults.removeEventListener('click', resultshandler);
   }
 }
 
@@ -96,7 +98,7 @@ viewresults.addEventListener('click', resultshandler);
 //** Instantiations */
 
 let product1 = new OddDuckProducts('bag');
-let product2 = new OddDuckProducts('bag');
+let product2 = new OddDuckProducts('banana');
 let product3 = new OddDuckProducts('bathroom');
 let product4 = new OddDuckProducts('boots');
 let product5 = new OddDuckProducts('breakfast');
