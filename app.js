@@ -5,8 +5,9 @@
 
 let productarray = [];
 
-let votingrounds = 25;
+let totalvotes = 0;
 
+let votingrounds = 3;
 // let productgenarray = [];
 
 //** DOM Window */
@@ -18,6 +19,7 @@ let imagethree = document.getElementById('imagethree_page');
 let viewresults = document.getElementById('viewresults_page');
 let voteresults = document.getElementById('voteresults_page');
 
+let ctx = document.getElementById('OddDuckChart');
 
 //** Constructor */
 
@@ -32,23 +34,26 @@ function OddDuckProducts(imagename, image_ext = 'jpg'){
 
 function randomarraynumber (){
   let somenumber = Math.floor(Math.random() * productarray.length);
-  console.log(somenumber);
   return somenumber;
 }
 
 
+let imagerenderarray = [];
+
+
 function renderimages (){
-  let choiceimage1 = randomarraynumber();
-  let choiceimage2 = randomarraynumber();
-  let choiceimage3 = randomarraynumber();
-
-  while (choiceimage2 === choiceimage1){
-    choiceimage2 = randomarraynumber();
+  console.log(imagerenderarray);
+  while (imagerenderarray.length < 6){
+    let selectrandom = randomarraynumber();
+    if ((!imagerenderarray.includes(selectrandom))){
+      imagerenderarray.push(selectrandom);
+    }
   }
+  console.log(imagerenderarray);
 
-  while (choiceimage3 === choiceimage1 || choiceimage3 === choiceimage2 ){
-    choiceimage3 = randomarraynumber();
-  }
+  let choiceimage1 = imagerenderarray[3];
+  let choiceimage2 = imagerenderarray[4];
+  let choiceimage3 = imagerenderarray[5];
 
   imageone.src = productarray[choiceimage1].image;
   imageone.title = productarray[choiceimage1].name;
@@ -60,6 +65,11 @@ function renderimages (){
   productarray[choiceimage1].views++;
   productarray[choiceimage2].views++;
   productarray[choiceimage3].views++;
+
+  imagerenderarray.shift();
+  imagerenderarray.shift();
+  imagerenderarray.shift();
+  console.log(imagerenderarray);
 }
 
 //** Event Handler */
@@ -71,6 +81,7 @@ function votehandler(event){
   for(let i = 0; i < productarray.length; i++){
     if (productarray[i].name === votedimage){
       productarray[i].votes++;
+      totalvotes++;
       votingrounds--;
       renderimages();
     }
@@ -79,14 +90,64 @@ function votehandler(event){
 
 function resultshandler(){
   if (votingrounds <= 0){
+    let totalvotesprint = document.createElement('div');
+    totalvotesprint.id = 'totalvotesprint';
+    totalvotesprint.textContent = `Total Votes: ${totalvotes}`;
+    voteresults.appendChild(totalvotesprint);
     for(let i = 0; i < productarray.length; i++){
       let odditem = document.createElement('li');
       odditem.textContent = `${productarray[i].name} - ${productarray[i].votes} votes, ${productarray[i].views} views`;
       voteresults.appendChild(odditem);
     }
+    chartrender();
     viewresults.removeEventListener('click', resultshandler);
   }
 }
+
+function chartrender(){
+  let oddducknames = [];
+  let oddduckviews = [];
+  let oddduckvotes = [];
+
+  for(let i = 0; i < productarray.length; i++){
+    oddducknames.push(productarray[i].name);
+    oddduckviews.push(productarray[i].views);
+    oddduckvotes.push(productarray[i].votes);
+  }
+  console.log(oddducknames);
+
+  let chartObj = {
+    type: 'bar',
+    data: {
+      labels: oddducknames,
+      datasets: [{
+        label: '# of Views',
+        data: oddduckviews, // array that will hold the views
+        borderWidth: 5,
+        backgroundColor: 'red',
+        borderColor: 'red'
+      },
+      {
+        label: '# of Votes',
+        data: oddduckvotes, // array that will hold the # of votes
+        borderWidth: 5,
+        backgroundColor: 'blue',
+        borderColor: 'blue'
+      }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+
+  new Chart(ctx, chartObj);
+}
+
 
 //** Event Listener */
 
