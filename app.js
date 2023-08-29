@@ -16,7 +16,6 @@ let imagetwo = document.getElementById('imagetwo_page');
 let imagethree = document.getElementById('imagethree_page');
 let viewresults = document.getElementById('viewresults_page');
 let voteresults = document.getElementById('voteresults_page');
-let OddDuckChartcontainter = document.getElementById('OddDuckChartcontainter');
 
 let ctx = document.getElementById('OddDuckChart');
 
@@ -176,7 +175,20 @@ let oddduckcache = JSON.parse(localStorage.getItem('stored_oddduck_array'));
 //** Instantiations */
 
 if (oddduckcache) {
-  productarray = oddduckcache;
+  for(let i = 0; i < oddduckcache.length; i++){
+    if (oddduckcache.name === 'sweep'){
+      let reconstructedproductspecial = new OddDuckProducts(oddduckcache[i].name, 'png');
+      reconstructedproductspecial.votes = oddduckcache[i].votes;
+      reconstructedproductspecial.views = oddduckcache[i].views;
+      productarray.push(reconstructedproductspecial);
+    } else {
+      let reconstructedproduct = new OddDuckProducts(oddduckcache[i].name);
+      reconstructedproduct.votes = oddduckcache[i].votes;
+      reconstructedproduct.views = oddduckcache[i].views;
+      productarray.push(reconstructedproduct);
+    }
+  }
+  // productarray = oddduckcache;
   console.log(productarray);
 
 } else {
