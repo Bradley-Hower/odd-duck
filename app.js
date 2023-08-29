@@ -5,8 +5,6 @@
 
 let productarray = [];
 
-let totalvotes = 0;
-
 let votingrounds = 3;
 // let productgenarray = [];
 
@@ -78,17 +76,25 @@ function votehandler(event){
   //** Pull name from clicked item */
   let votedimage = event.target.title;
 
+
   for(let i = 0; i < productarray.length; i++){
     if (productarray[i].name === votedimage){
       productarray[i].votes++;
-      totalvotes++;
       votingrounds--;
       renderimages();
+      let oddduckcache = JSON.stringify(productarray);
+      localStorage.setItem('stored_oddduck_array', oddduckcache);
     }
   }
 }
 
 function resultshandler(){
+  voteresults.innerHTML = '';
+  let totalvotes = 0;
+  for (let i in productarray){
+    totalvotes += productarray[i].votes;
+  }
+
   if (votingrounds <= 0){
     let totalvotesprint = document.createElement('div');
     totalvotesprint.id = 'totalvotesprint';
@@ -100,11 +106,16 @@ function resultshandler(){
       voteresults.appendChild(odditem);
     }
     chartrender();
-    viewresults.removeEventListener('click', resultshandler);
+    // viewresults.removeEventListener('click', resultshandler);
   }
 }
 
+let surverychart = null;
+
 function chartrender(){
+  if (surverychart !== null){
+    surverychart.destroy();
+  }
   let oddducknames = [];
   let oddduckviews = [];
   let oddduckvotes = [];
@@ -139,13 +150,16 @@ function chartrender(){
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+          }
         }
       }
     }
   };
 
-  new Chart(ctx, chartObj);
+  surverychart = new Chart(ctx, chartObj);
 }
 
 
@@ -155,31 +169,53 @@ oddducks.addEventListener('click', votehandler);
 
 viewresults.addEventListener('click', resultshandler);
 
+let oddduckcache = JSON.parse(localStorage.getItem('stored_oddduck_array'));
+
 
 //** Instantiations */
 
-let product1 = new OddDuckProducts('bag');
-let product2 = new OddDuckProducts('banana');
-let product3 = new OddDuckProducts('bathroom');
-let product4 = new OddDuckProducts('boots');
-let product5 = new OddDuckProducts('breakfast');
-let product6 = new OddDuckProducts('bubblegum');
-let product7 = new OddDuckProducts('chair');
-let product8 = new OddDuckProducts('cthulhu');
-let product9 = new OddDuckProducts('dog-duck');
-let product10 = new OddDuckProducts('dragon');
-let product11 = new OddDuckProducts('pen');
-let product12 = new OddDuckProducts('pet-sweep');
-let product13 = new OddDuckProducts('scissors');
-let product14 = new OddDuckProducts('shark');
-let product15 = new OddDuckProducts('sweep', 'png');
-let product16 = new OddDuckProducts('tauntaun');
-let product17 = new OddDuckProducts('unicorn');
-let product18 = new OddDuckProducts('water-can');
-let product19 = new OddDuckProducts('wine-glass');
+if (oddduckcache) {
+  for(let i = 0; i < oddduckcache.length; i++){
+    if (oddduckcache.name === 'sweep'){
+      let reconstructedproductspecial = new OddDuckProducts(oddduckcache[i].name, 'png');
+      reconstructedproductspecial.votes = oddduckcache[i].votes;
+      reconstructedproductspecial.views = oddduckcache[i].views;
+      productarray.push(reconstructedproductspecial);
+    } else {
+      let reconstructedproduct = new OddDuckProducts(oddduckcache[i].name);
+      reconstructedproduct.votes = oddduckcache[i].votes;
+      reconstructedproduct.views = oddduckcache[i].views;
+      productarray.push(reconstructedproduct);
+    }
+  }
+  // productarray = oddduckcache;
+  console.log(productarray);
 
-productarray.push(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10, product11, product12, product13, product14, product15, product16, product17, product18, product19);
+} else {
 
+  let product1 = new OddDuckProducts('bag');
+  let product2 = new OddDuckProducts('banana');
+  let product3 = new OddDuckProducts('bathroom');
+  let product4 = new OddDuckProducts('boots');
+  let product5 = new OddDuckProducts('breakfast');
+  let product6 = new OddDuckProducts('bubblegum');
+  let product7 = new OddDuckProducts('chair');
+  let product8 = new OddDuckProducts('cthulhu');
+  let product9 = new OddDuckProducts('dog-duck');
+  let product10 = new OddDuckProducts('dragon');
+  let product11 = new OddDuckProducts('pen');
+  let product12 = new OddDuckProducts('pet-sweep');
+  let product13 = new OddDuckProducts('scissors');
+  let product14 = new OddDuckProducts('shark');
+  let product15 = new OddDuckProducts('sweep', 'png');
+  let product16 = new OddDuckProducts('tauntaun');
+  let product17 = new OddDuckProducts('unicorn');
+  let product18 = new OddDuckProducts('water-can');
+  let product19 = new OddDuckProducts('wine-glass');
+
+  productarray.push(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10, product11, product12, product13, product14, product15, product16, product17, product18, product19);
+
+}
 
 //** Function Call */
 
