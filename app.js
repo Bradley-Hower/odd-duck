@@ -5,7 +5,7 @@
 
 let productarray = [];
 
-let votingrounds = 3;
+let votingrounds = 25;
 // let productgenarray = [];
 
 //** DOM Window */
