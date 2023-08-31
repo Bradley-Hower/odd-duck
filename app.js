@@ -176,7 +176,7 @@ let oddduckcache = JSON.parse(localStorage.getItem('stored_oddduck_array'));
 
 if (oddduckcache) {
   for(let i = 0; i < oddduckcache.length; i++){
-    if (oddduckcache.name === 'sweep'){
+    if (oddduckcache[i].name === 'sweep'){
       let reconstructedproductspecial = new OddDuckProducts(oddduckcache[i].name, 'png');
       reconstructedproductspecial.votes = oddduckcache[i].votes;
       reconstructedproductspecial.views = oddduckcache[i].views;
