@@ -1,8 +1,6 @@
 'use strict';
 //** Globals */
 
-
-
 let productarray = [];
 
 let votingrounds = 25;
@@ -37,7 +35,6 @@ function randomarraynumber (){
 
 
 let imagerenderarray = [];
-
 
 function renderimages (){
   console.log(imagerenderarray);
@@ -111,6 +108,9 @@ function resultshandler(){
 }
 
 let surverychart = null;
+
+
+///** Chart Render */
 
 function chartrender(){
   if (surverychart !== null){
@@ -188,8 +188,6 @@ if (oddduckcache) {
       productarray.push(reconstructedproduct);
     }
   }
-  // productarray = oddduckcache;
-  console.log(productarray);
 
 } else {
 
