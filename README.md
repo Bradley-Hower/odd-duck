@@ -1,6 +1,6 @@
 # odd-duck - Class 12 lab
 
-A survey web application, made for the purpose of collecting employees' opinions on which odd duck product is best. The survey results will be viewable after 25 rounds, after which results can be viewed again at any time. Users are presented three randomly generated products among nineteen, with no consequtive showings from round to round. Data is stored locally for some data persistence. 
+A survey web application, made for the purpose of collecting employees' opinions on which odd duck product is best. The survey results will be viewable after 25 rounds, after which results can be viewed again at any time. Users are presented three randomly generated products among nineteen, with no consecutive showings from round to round. Data is stored locally for some data persistence. 
 
 ## Lighthouse
 
